@@ -143,27 +143,30 @@ section.block{padding:110px 0}
 .brands b{font:700 20px/1 var(--display);color:var(--ink-2);letter-spacing:-.01em}
 
 /* Buy & sell */
-.bs{display:grid;grid-template-columns:1.05fr .95fr;gap:18px}
-.bs-cards{display:grid;gap:18px}
-.bs-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:30px;display:flex;gap:20px}
-.bs-card .ic{width:48px;height:48px;border-radius:14px;flex:none;display:grid;place-items:center;background:var(--ice);color:var(--accent-2)}
-.bs-card h3{font:600 20px/1.2 var(--display);margin-bottom:8px}
-.bs-card p{color:var(--muted);font-size:15px}
-.bs-card ul{margin-top:12px;list-style:none;display:grid;gap:7px;font-size:14.5px;color:var(--ink-2)}
-.bs-card li{display:flex;gap:8px;align-items:flex-start}
-.bs-card li .ico{width:18px;height:18px;color:var(--ok);margin-top:2px}
-.tool{background:linear-gradient(160deg,#0a1628,#0d2340 60%,#0b2f4e);color:var(--on-night);border-radius:var(--radius);padding:34px;position:relative;overflow:hidden}
-.tool::before{content:"";position:absolute;inset:auto -80px -120px auto;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(34,195,238,.28),transparent 65%)}
-.tool h3{font:600 22px/1.2 var(--display);margin-bottom:6px}
-.tool > p{color:var(--on-night-2);font-size:14.5px;margin-bottom:28px}
-.tool label{font-size:13px;color:var(--on-night-2);display:flex;justify-content:space-between}
-.tool label b{color:var(--on-night);font-weight:600}
-input[type=range]{width:100%;margin:14px 0 22px;accent-color:var(--accent);height:24px}
-.chk{display:flex!important;justify-content:flex-start!important;gap:10px;align-items:center;cursor:pointer;margin-bottom:28px}
-.chk input{width:18px;height:18px;accent-color:var(--accent)}
-.result{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;padding-top:24px;border-top:1px solid var(--night-line);position:relative}
-.result .big{font:700 56px/1 var(--display);letter-spacing:-.04em;background:linear-gradient(100deg,#bff0ff,var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
-.result small{display:block;color:var(--on-night-2);font-size:12.5px;margin-top:8px;max-width:220px}
+.tool{background:linear-gradient(160deg,#0a1628,#0d2340 60%,#0b2f4e);color:var(--on-night);border-radius:24px;padding:48px;position:relative;overflow:hidden;overflow:clip}
+.tool::before{content:"";position:absolute;inset:auto -80px -140px auto;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(34,195,238,.26),transparent 65%);pointer-events:none}
+.quote-tool{display:grid;grid-template-columns:.85fr 1.15fr;gap:48px;align-items:start}
+.q-intro .kicker{color:var(--accent)}
+.q-intro h2{font:700 clamp(28px,3.4vw,42px)/1.08 var(--display);letter-spacing:-.03em;margin-bottom:16px}
+.q-intro p{color:var(--on-night-2);font-size:16px}
+.q-intro ul{list-style:none;display:grid;gap:10px;margin-top:24px;font-size:14.5px}
+.q-intro li{display:flex;gap:10px;align-items:center}
+.q-intro li .ico{width:18px;height:18px;color:var(--accent)}
+.q-fields{position:relative;display:grid;gap:26px}
+.q-fields fieldset{border:0;display:grid;gap:12px}
+.q-fields legend{font:600 15px/1.3 var(--display);margin-bottom:12px}
+.chips{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.chip{position:relative;cursor:pointer}
+.chip input{position:absolute;opacity:0;pointer-events:none}
+.chip span{display:flex;align-items:center;justify-content:center;height:48px;border-radius:12px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04);font-weight:600;font-size:14.5px;transition:background .2s,border-color .2s,color .2s,transform .2s}
+.chip:hover span{border-color:rgba(34,195,238,.5)}
+.chip input:checked + span{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);box-shadow:0 8px 22px -10px rgba(34,195,238,.9)}
+.chip input:focus-visible + span{outline:2px solid #fff;outline-offset:2px}
+.q-input{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:14px;outline:none;transition:border-color .2s,background .2s}
+.q-input:focus{border-color:var(--accent);background:rgba(34,195,238,.06)}
+.q-input::placeholder,.field input::placeholder,.field textarea::placeholder{color:rgba(159,176,198,.7)}
+textarea.q-input{min-height:110px;resize:vertical}
+.q-fields .btn{width:100%;height:54px;font-size:16px}
 
 /* Process */
 .process{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;counter-reset:s}
@@ -235,7 +238,8 @@ footer a:hover{color:var(--on-night)}
   .nav ul{display:none}
   .grid-svc{grid-template-columns:1fr 1fr}
   .svc.feature{grid-column:span 2}
-  .bs,.rv,.ct{grid-template-columns:1fr}
+  .rv,.ct,.quote-tool{grid-template-columns:1fr}
+  .quote-tool{gap:32px}
   .process{grid-template-columns:1fr 1fr}
   .proc::after{display:none}
 }
@@ -275,6 +279,8 @@ footer a:hover{color:var(--on-night)}
   .grid-svc,.process{grid-template-columns:1fr}
   .svc.feature{grid-column:auto}
   .row2{grid-template-columns:1fr}
+  .tool{padding:28px 20px}
+  .chips{grid-template-columns:repeat(2,1fr)}
   .score .num{font-size:76px}
   footer .wrap{padding-bottom:96px}
 
@@ -327,7 +333,7 @@ footer a:hover{color:var(--on-night)}
     <ul>
       <li><a href="#inside">Inside your AC</a></li>
       <li><a href="#services">Services</a></li>
-      <li><a href="#buy-sell">Buy &amp; Sell</a></li>
+      <li><a href="#quote">Get quote</a></li>
       <li><a href="#reviews">Reviews</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
@@ -424,52 +430,50 @@ footer a:hover{color:var(--on-night)}
       </div>
     </section>
 
-    <!-- BUY & SELL -->
-    <section class="block" id="buy-sell" style="padding-top:0">
+    <!-- QUOTE -->
+    <section class="block" id="quote" style="padding-top:0">
       <div class="wrap">
-        <div class="sec-head rv-in">
-          <div><span class="kicker">Buy &amp; Sell</span><h2>Buying a new AC or selling your old one?</h2></div>
-          <p>Tell us your room and budget, and we'll suggest the right unit and install it. Selling? We inspect it, uninstall it and take it away.</p>
-        </div>
-        <div class="bs">
-          <div class="bs-cards">
-            <article class="bs-card rv-in">
-              <div class="ic"><svg class="ico"><use href="#i-cart"/></svg></div>
-              <div>
-                <h3>Buy an AC</h3>
-                <p>Get the right tonnage for your room, not just the most expensive model.</p>
-                <ul>
-                  <li><svg class="ico"><use href="#i-check"/></svg>New and checked second-hand units</li>
-                  <li><svg class="ico"><use href="#i-check"/></svg>Supply plus installation, sorted together</li>
-                  <li><svg class="ico"><use href="#i-check"/></svg>Honest advice on brand and budget</li>
-                </ul>
-              </div>
-            </article>
-            <article class="bs-card rv-in">
-              <div class="ic"><svg class="ico"><use href="#i-tag"/></svg></div>
-              <div>
-                <h3>Sell your old AC</h3>
-                <p>Upgrading or moving? Turn your old unit into cash without the hassle.</p>
-                <ul>
-                  <li><svg class="ico"><use href="#i-check"/></svg>Fair offer after a quick inspection</li>
-                  <li><svg class="ico"><use href="#i-check"/></svg>We uninstall and pick it up</li>
-                  <li><svg class="ico"><use href="#i-check"/></svg>Working or not, ask us anyway</li>
-                </ul>
-              </div>
-            </article>
+        <form class="tool quote-tool rv-in" id="quoteForm">
+          <div class="q-intro">
+            <span class="kicker">Get a quote</span>
+            <h2>Tell us about your AC. Get a price on WhatsApp.</h2>
+            <p>Choose your AC size and brand and describe the problem. Tap the button and WhatsApp opens with your message already typed.</p>
+            <ul>
+              <li><svg class="ico"><use href="#i-check"/></svg>Reply on WhatsApp, 24 hours</li>
+              <li><svg class="ico"><use href="#i-check"/></svg>Price shared before any work</li>
+            </ul>
           </div>
-          <div class="tool rv-in" id="tonnage">
-            <h3>What size AC do you need?</h3>
-            <p>A quick rule-of-thumb estimate. We confirm it on visit.</p>
-            <label for="area">Room size <b><span id="areaOut">150</span> sq ft</b></label>
-            <input type="range" id="area" min="60" max="400" step="10" value="150">
-            <label class="chk"><input type="checkbox" id="hot">Top floor, or the room gets direct sun</label>
-            <div class="result">
-              <div><div class="big" id="ton">1.5 Ton</div><small id="tonNote">Good for a typical bedroom or small living room.</small></div>
-              <a class="btn btn-primary" id="tonWa" href="#" target="_blank" rel="noopener"><svg class="ico"><use href="#i-chat"/></svg>Get a quote</a>
-            </div>
+          <div class="q-fields">
+            <fieldset>
+              <legend>What is your AC size?</legend>
+              <div class="chips">
+                <label class="chip"><input type="radio" name="size" value="0.75 Ton"><span>0.75 Ton</span></label>
+                <label class="chip"><input type="radio" name="size" value="1 Ton"><span>1 Ton</span></label>
+                <label class="chip"><input type="radio" name="size" value="1.5 Ton" checked><span>1.5 Ton</span></label>
+                <label class="chip"><input type="radio" name="size" value="2 Ton"><span>2 Ton</span></label>
+                <label class="chip"><input type="radio" name="size" value="2.5 Ton or more"><span>2.5+ Ton</span></label>
+                <label class="chip"><input type="radio" name="size" value="Not sure"><span>Not sure</span></label>
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend>AC company</legend>
+              <div class="chips">
+                <label class="chip"><input type="radio" name="brand" value="LG" checked><span>LG</span></label>
+                <label class="chip"><input type="radio" name="brand" value="Samsung"><span>Samsung</span></label>
+                <label class="chip"><input type="radio" name="brand" value="Voltas"><span>Voltas</span></label>
+                <label class="chip"><input type="radio" name="brand" value="Daikin"><span>Daikin</span></label>
+                <label class="chip"><input type="radio" name="brand" value="Blue Star"><span>Blue Star</span></label>
+                <label class="chip"><input type="radio" name="brand" value="Others"><span>Others</span></label>
+              </div>
+              <input class="q-input" id="otherBrand" name="otherBrand" placeholder="Which company? (e.g. Hitachi, Lloyd)" hidden>
+            </fieldset>
+            <fieldset>
+              <legend>What's the issue with your AC?</legend>
+              <textarea class="q-input" name="issue" required placeholder="e.g. Not cooling properly, water dripping from the indoor unit"></textarea>
+            </fieldset>
+            <button class="btn btn-primary" type="submit"><svg class="ico"><use href="#i-chat"/></svg>Get quote on WhatsApp</button>
           </div>
-        </div>
+        </form>
       </div>
     </section>
 
@@ -601,19 +605,19 @@ const io = new IntersectionObserver(es => es.forEach(e => {
 }), { threshold: .14, rootMargin: '0px 0px -40px 0px' });
 $$('.rv-in').forEach((el, i) => { el.style.transitionDelay = (i % 4) * 70 + 'ms'; io.observe(el); });
 
-// tonnage estimator
-const area = $('#area'), hot = $('#hot');
-function tonnage() {
-  const a = +area.value; $('#areaOut').textContent = a;
-  const levels = [[120, 1, 'Fits a small bedroom or study.'], [180, 1.5, 'Good for a typical bedroom or small living room.'], [250, 2, 'Suits a large bedroom or living room.'], [1e9, 2.5, 'Big space. You may be better off with two units.']];
-  let i = levels.findIndex(l => a <= l[0]);
-  if (hot.checked) i = Math.min(levels.length - 1, i + 1);
-  const [, t, note] = levels[i];
-  const label = (t === 2.5 ? '2.5+' : t) + ' Ton';
-  $('#ton').textContent = label; $('#tonNote').textContent = note;
-  $('#tonWa').href = WA + encodeURIComponent(`Hi Sachin Electrical, I'd like a quote for a ${label} AC for a ~${a} sq ft room${hot.checked ? ' (top floor / sunny)' : ''}.`);
-}
-area.addEventListener('input', tonnage); hot.addEventListener('change', tonnage); tonnage();
+// quote form → WhatsApp
+const qf = $('#quoteForm'), other = $('#otherBrand');
+qf.addEventListener('change', () => {
+  const isOther = qf.brand.value === 'Others';
+  other.hidden = !isOther; other.required = isOther;
+  if (isOther && document.activeElement.name === 'brand') other.focus();
+});
+qf.addEventListener('submit', e => {
+  e.preventDefault();
+  const brand = qf.brand.value === 'Others' ? (other.value.trim() || 'Other') : qf.brand.value;
+  const msg = ['Hi Sachin Electrical, I need a quote for my AC.', `AC size: ${qf.size.value}`, `AC company: ${brand}`, `Issue: ${qf.issue.value.trim()}`].join('\n');
+  window.open(WA + encodeURIComponent(msg), '_blank', 'noopener');
+});
 
 // WhatsApp booking form
 $('#waForm').addEventListener('submit', e => {
