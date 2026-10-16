@@ -1,0 +1,1111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sachin Electrical — AC Repair, Service & Installation in Gurugram</title>
+<meta name="description" content="Sachin Electrical, Sector 85 Gurugram: AC repair, AC service, installation, buying and selling ACs, plus washing machine and microwave repair. Open 24 hours. Call 095188 72077.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --night:#050b16; --night-2:#0a1628; --night-3:#0f2038;
+  --on-night:#eaf2fb; --on-night-2:#9fb0c6; --night-line:rgba(255,255,255,.09);
+  --ink:#0b1424; --ink-2:#34445a; --muted:#66768c; --line:#e2e8f0;
+  --bg:#f5f8fb; --card:#ffffff; --ice:#e6f6ff;
+  --accent:#22c3ee; --accent-2:#0284c7; --accent-ink:#04263a;
+  --star:#f5b301; --ok:#16a34a;
+  --radius:18px; --shadow:0 1px 2px rgba(11,20,36,.05),0 12px 32px -12px rgba(11,20,36,.16);
+  --display:"Sora",system-ui,sans-serif; --body:"Inter",system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:var(--body);color:var(--ink);background:var(--night);line-height:1.55;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+img,svg{display:block}
+a{color:inherit;text-decoration:none}
+button,input,select,textarea{font:inherit;color:inherit}
+.wrap{width:min(1200px,100% - 40px);margin-inline:auto}
+.ico{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+
+/* ---------- Stage (fixed 3D canvas) ---------- */
+#stage{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(60vmax 50vmax at 70% 48%,rgba(34,195,238,.16),transparent 60%),
+    radial-gradient(40vmax 40vmax at 15% 110%,rgba(2,132,199,.18),transparent 60%),
+    linear-gradient(180deg,var(--night) 0%,var(--night-2) 55%,var(--night-3) 100%);}
+#stage::before{content:"";position:absolute;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+  background-size:64px 64px;mask-image:radial-gradient(70% 60% at 65% 50%,#000 20%,transparent 75%);-webkit-mask-image:radial-gradient(70% 60% at 65% 50%,#000 20%,transparent 75%)}
+#ac{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity 1.2s ease}
+#ac.ready{opacity:1}
+.hot{position:absolute;left:0;top:0;display:flex;align-items:center;gap:8px;opacity:0;will-change:transform,opacity;white-space:nowrap}
+.hot .dot{width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px rgba(34,195,238,.25),0 0 18px var(--accent)}
+.hot .tag{font:600 12px/1 var(--body);letter-spacing:.02em;color:var(--on-night);padding:7px 10px;border-radius:999px;background:rgba(8,20,38,.72);border:1px solid rgba(34,195,238,.35);backdrop-filter:blur(6px)}
+.hot.flip{flex-direction:row-reverse}
+.hot .line{width:26px;height:1px;background:linear-gradient(90deg,var(--accent),rgba(34,195,238,.2))}
+
+/* ---------- Nav ---------- */
+.nav{position:fixed;top:0;left:0;right:0;z-index:50;transition:background .35s,box-shadow .35s,color .35s;color:var(--on-night)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:72px;gap:20px}
+.brand{display:flex;align-items:center;gap:11px}
+.brand .mark{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;background:linear-gradient(140deg,var(--accent),var(--accent-2));color:#fff;box-shadow:0 6px 18px -6px rgba(34,195,238,.7)}
+.brand .mark svg{width:22px;height:22px}
+.brand b{font:700 17px/1.1 var(--display);letter-spacing:-.01em;display:block}
+.brand small{font-size:11.5px;opacity:.7;letter-spacing:.04em}
+.nav ul{display:flex;gap:28px;list-style:none;font-size:14.5px;font-weight:500}
+.nav ul a{opacity:.78;transition:opacity .2s}
+.nav ul a:hover{opacity:1}
+.nav.solid{background:rgba(255,255,255,.88);backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);color:var(--ink);box-shadow:0 1px 0 var(--line)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;height:48px;padding:0 22px;border-radius:999px;font-weight:600;font-size:15px;border:1px solid transparent;cursor:pointer;transition:transform .2s,box-shadow .2s,background .2s;white-space:nowrap}
+.btn:hover{transform:translateY(-2px)}
+.btn .ico{width:18px;height:18px}
+.btn-primary{background:var(--accent);color:var(--accent-ink);box-shadow:0 10px 30px -10px rgba(34,195,238,.8)}
+.btn-primary:hover{box-shadow:0 14px 34px -10px rgba(34,195,238,.95)}
+.btn-ghost{border-color:rgba(255,255,255,.22);color:var(--on-night);background:rgba(255,255,255,.04)}
+.btn-ghost:hover{background:rgba(255,255,255,.1)}
+.btn-dark{background:var(--ink);color:#fff}
+.btn-line{border-color:var(--line);background:#fff;color:var(--ink)}
+.nav .btn{height:42px;padding:0 18px;font-size:14px}
+
+/* ---------- Hero ---------- */
+.hero{position:relative;z-index:1;min-height:100vh;min-height:100svh;display:flex;align-items:center;color:var(--on-night);padding:110px 0 70px}
+.hero-copy{max-width:600px}
+.pill{display:inline-flex;align-items:center;gap:10px;padding:7px 14px 7px 10px;border-radius:999px;border:1px solid var(--night-line);background:rgba(255,255,255,.04);font-size:13px;color:var(--on-night-2);backdrop-filter:blur(6px)}
+.live{width:8px;height:8px;border-radius:50%;background:#34d399;box-shadow:0 0 0 0 rgba(52,211,153,.6);animation:ping 2s infinite}
+@keyframes ping{0%{box-shadow:0 0 0 0 rgba(52,211,153,.55)}70%{box-shadow:0 0 0 10px rgba(52,211,153,0)}100%{box-shadow:0 0 0 0 rgba(52,211,153,0)}}
+.hero h1{font:700 clamp(40px,5.6vw,72px)/1.02 var(--display);letter-spacing:-.035em;margin:22px 0 20px}
+.hero h1 em{font-style:normal;background:linear-gradient(100deg,#9ee7ff,var(--accent) 45%,#38bdf8);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{font-size:clamp(16px,1.6vw,18.5px);color:var(--on-night-2);max-width:500px}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px;margin:32px 0 40px}
+.trust{display:flex;flex-wrap:wrap;gap:28px;padding-top:26px;border-top:1px solid var(--night-line)}
+.trust div{min-width:110px}
+.trust b{display:flex;align-items:center;gap:6px;font:700 24px/1 var(--display);letter-spacing:-.02em}
+.trust span{display:block;font-size:13px;color:var(--on-night-2);margin-top:6px}
+.trust .star{width:18px;height:18px;fill:var(--star);stroke:none}
+.scroll-cue{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--on-night-2)}
+.scroll-cue i{width:22px;height:36px;border:1.5px solid rgba(255,255,255,.3);border-radius:12px;position:relative}
+.scroll-cue i::after{content:"";position:absolute;left:50%;top:7px;width:3px;height:7px;margin-left:-1.5px;border-radius:2px;background:var(--accent);animation:wheel 1.8s infinite}
+@keyframes wheel{0%{opacity:0;transform:translateY(0)}30%{opacity:1}100%{opacity:0;transform:translateY(12px)}}
+
+/* ---------- Story ---------- */
+.story{position:relative;z-index:1;height:700vh;color:var(--on-night)}
+.story-sticky{position:sticky;top:0;height:100vh;height:100svh;display:flex;align-items:center}
+.story-panel{position:relative;max-width:470px;padding:30px 32px 30px 54px;border-radius:22px;background:rgba(6,14,28,.5);border:1px solid var(--night-line);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);transition:background .5s ease,color .5s ease,border-color .5s ease,box-shadow .5s ease}
+.story-panel.light{background:rgba(255,255,255,.95);border-color:rgba(255,255,255,.7);color:var(--ink);box-shadow:0 24px 60px -20px rgba(0,0,0,.55)}
+.story-panel.light .step p{color:var(--ink-2)}
+.story-panel.light .count{color:var(--muted)}
+.story-panel.light .count b{color:var(--ink)}
+.story-panel.light .eyebrow{color:var(--accent-2)}
+.story-panel.light .rail{background:var(--line)}
+.story-panel.light .step li{color:var(--accent-2);border-color:rgba(2,132,199,.28);background:rgba(2,132,199,.06)}
+.story-panel .step p,.story-panel .count,.story-panel .count b,.story-panel .eyebrow,.story-panel .rail,.story-panel .step li{transition:color .5s,background .5s,border-color .5s}
+.rail{position:absolute;left:26px;top:34px;bottom:34px;width:2px;background:var(--night-line);border-radius:2px}
+.rail i{position:absolute;left:0;top:0;width:100%;height:0;background:linear-gradient(var(--accent),#38bdf8);border-radius:2px;box-shadow:0 0 12px var(--accent)}
+.story-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
+.eyebrow{font-size:12.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
+.count{font:600 13px/1 var(--display);color:var(--on-night-2)}
+.count b{color:var(--on-night);font-size:15px}
+.steps{position:relative;min-height:250px}
+.step{position:absolute;inset:0 0 auto 0;opacity:0;transform:translateY(24px);transition:opacity .55s ease,transform .55s ease;pointer-events:none}
+.step.on{opacity:1;transform:none}
+.step h2{font:700 clamp(28px,3.4vw,42px)/1.08 var(--display);letter-spacing:-.03em;margin-bottom:14px}
+.step p{color:var(--on-night-2);font-size:16.5px}
+.step ul{list-style:none;display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.step li{font-size:12.5px;padding:6px 11px;border-radius:999px;border:1px solid rgba(34,195,238,.3);color:#bdeeff;background:rgba(34,195,238,.07)}
+
+/* ---------- Light sections ---------- */
+.sheet{position:relative;z-index:2;background:var(--bg);color:var(--ink)}
+.sheet:first-of-type{border-radius:28px 28px 0 0}
+section.block{padding:110px 0}
+.sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:30px;margin-bottom:52px;flex-wrap:wrap}
+.sec-head h2{font:700 clamp(32px,4.4vw,54px)/1.04 var(--display);letter-spacing:-.035em;max-width:640px}
+.sec-head p{color:var(--muted);max-width:420px;font-size:16.5px}
+.kicker{display:inline-block;font-size:12.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-2);margin-bottom:14px}
+
+.grid-svc{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.svc{position:relative;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:30px 28px 28px;transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s,border-color .35s;overflow:hidden}
+.svc:hover{transform:translateY(-6px);box-shadow:var(--shadow);border-color:#cfe9f7}
+.svc::after{content:"";position:absolute;right:-60px;top:-60px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(34,195,238,.18),transparent 70%);opacity:0;transition:opacity .35s}
+.svc:hover::after{opacity:1}
+.svc .ic{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;background:var(--ice);color:var(--accent-2);margin-bottom:22px}
+.svc .ic .ico{width:26px;height:26px}
+.svc h3{font:600 21px/1.2 var(--display);letter-spacing:-.015em;margin-bottom:10px}
+.svc p{color:var(--muted);font-size:15px}
+.svc .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:18px}
+.svc .tags span{font-size:12px;font-weight:500;padding:5px 10px;border-radius:999px;background:var(--bg);color:var(--ink-2);border:1px solid var(--line)}
+.svc.feature{grid-column:span 2;background:linear-gradient(135deg,#0a1628,#0f2a48);color:var(--on-night);border-color:transparent}
+.svc.feature p{color:var(--on-night-2)}
+.svc.feature .ic{background:rgba(34,195,238,.14);color:var(--accent)}
+.svc.feature .tags span{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12);color:var(--on-night)}
+
+.brands{display:flex;align-items:center;gap:14px 34px;flex-wrap:wrap;margin-top:48px;padding:22px 28px;border:1px dashed #cdd8e4;border-radius:var(--radius);color:var(--muted);font-size:14px}
+.brands b{font:700 20px/1 var(--display);color:var(--ink-2);letter-spacing:-.01em}
+
+/* Buy & sell */
+.bs{display:grid;grid-template-columns:1.05fr .95fr;gap:18px}
+.bs-cards{display:grid;gap:18px}
+.bs-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:30px;display:flex;gap:20px}
+.bs-card .ic{width:48px;height:48px;border-radius:14px;flex:none;display:grid;place-items:center;background:var(--ice);color:var(--accent-2)}
+.bs-card h3{font:600 20px/1.2 var(--display);margin-bottom:8px}
+.bs-card p{color:var(--muted);font-size:15px}
+.bs-card ul{margin-top:12px;list-style:none;display:grid;gap:7px;font-size:14.5px;color:var(--ink-2)}
+.bs-card li{display:flex;gap:8px;align-items:flex-start}
+.bs-card li .ico{width:18px;height:18px;color:var(--ok);margin-top:2px}
+.tool{background:linear-gradient(160deg,#0a1628,#0d2340 60%,#0b2f4e);color:var(--on-night);border-radius:var(--radius);padding:34px;position:relative;overflow:hidden}
+.tool::before{content:"";position:absolute;inset:auto -80px -120px auto;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(34,195,238,.28),transparent 65%)}
+.tool h3{font:600 22px/1.2 var(--display);margin-bottom:6px}
+.tool > p{color:var(--on-night-2);font-size:14.5px;margin-bottom:28px}
+.tool label{font-size:13px;color:var(--on-night-2);display:flex;justify-content:space-between}
+.tool label b{color:var(--on-night);font-weight:600}
+input[type=range]{width:100%;margin:14px 0 22px;accent-color:var(--accent);height:24px}
+.chk{display:flex!important;justify-content:flex-start!important;gap:10px;align-items:center;cursor:pointer;margin-bottom:28px}
+.chk input{width:18px;height:18px;accent-color:var(--accent)}
+.result{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;padding-top:24px;border-top:1px solid var(--night-line);position:relative}
+.result .big{font:700 56px/1 var(--display);letter-spacing:-.04em;background:linear-gradient(100deg,#bff0ff,var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
+.result small{display:block;color:var(--on-night-2);font-size:12.5px;margin-top:8px;max-width:220px}
+
+/* Process */
+.process{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;counter-reset:s}
+.proc{position:relative;padding:28px 24px;border-radius:var(--radius);background:var(--card);border:1px solid var(--line)}
+.proc .n{font:700 13px/1 var(--display);color:var(--accent-2);letter-spacing:.1em}
+.proc h3{font:600 18px/1.25 var(--display);margin:16px 0 8px}
+.proc p{font-size:14.5px;color:var(--muted)}
+.proc:not(:last-child)::after{content:"";position:absolute;top:36px;right:-14px;width:10px;height:10px;border-top:2px solid #b9d7ea;border-right:2px solid #b9d7ea;transform:rotate(45deg);z-index:1}
+
+/* Reviews */
+.reviews{background:linear-gradient(180deg,var(--bg),var(--ice))}
+.rv{display:grid;grid-template-columns:.9fr 1.1fr;gap:18px;align-items:stretch}
+.score{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:36px;display:flex;flex-direction:column;justify-content:space-between;gap:30px}
+.score .num{font:700 96px/.9 var(--display);letter-spacing:-.05em}
+.stars{display:flex;gap:4px;margin:14px 0 8px}
+.stars svg{width:24px;height:24px}
+.score small{color:var(--muted);font-size:14.5px}
+.quote{background:var(--ink);color:#fff;border-radius:var(--radius);padding:40px;display:flex;flex-direction:column;justify-content:space-between;gap:28px;position:relative;overflow:hidden}
+.quote::before{content:"\201C";position:absolute;right:24px;top:-30px;font:700 220px/1 var(--display);color:rgba(34,195,238,.14)}
+.quote blockquote{font:600 clamp(24px,2.8vw,34px)/1.2 var(--display);letter-spacing:-.02em;position:relative}
+.quote cite{font-style:normal;color:#9fb0c6;font-size:14px}
+.themes{display:flex;flex-wrap:wrap;gap:8px}
+.themes span{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;padding:8px 13px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1)}
+.themes .ico{width:15px;height:15px;color:var(--accent)}
+
+/* Contact */
+.contact{background:var(--night-2);color:var(--on-night)}
+.contact .sec-head p{color:var(--on-night-2)}
+.contact .kicker{color:var(--accent)}
+.ct{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.ct-card{border:1px solid var(--night-line);border-radius:var(--radius);background:rgba(255,255,255,.03);padding:32px}
+.ct-list{display:grid;gap:4px}
+.ct-item{display:flex;gap:16px;align-items:flex-start;padding:16px 0;border-bottom:1px solid var(--night-line)}
+.ct-item:last-child{border:0}
+.ct-item .ic{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:rgba(34,195,238,.12);color:var(--accent);flex:none}
+.ct-item small{display:block;color:var(--on-night-2);font-size:12.5px;letter-spacing:.06em;text-transform:uppercase}
+.ct-item b{font:600 17px/1.35 var(--display)}
+.ct-item a:hover b{color:var(--accent)}
+.map{margin-top:18px;border-radius:14px;overflow:hidden;border:1px solid var(--night-line);height:230px;background:#0f2038}
+.map iframe{width:100%;height:100%;border:0;filter:grayscale(.3) contrast(1.05)}
+form.wa{display:grid;gap:14px}
+form.wa h3{font:600 22px/1.2 var(--display)}
+form.wa > p{color:var(--on-night-2);font-size:14.5px;margin-top:-6px;margin-bottom:6px}
+.field{display:grid;gap:7px}
+.field span{font-size:13px;color:var(--on-night-2)}
+.field input,.field select,.field textarea{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:13px 14px;outline:none;transition:border-color .2s,background .2s}
+.field select option{color:#0b1424}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--accent);background:rgba(34,195,238,.06)}
+.field textarea{min-height:96px;resize:vertical}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+form.wa .btn{width:100%;margin-top:6px}
+
+footer{position:relative;z-index:2;background:var(--night);color:var(--on-night-2);font-size:13.5px}
+footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;padding:30px 0 34px;border-top:1px solid var(--night-line)}
+footer a:hover{color:var(--on-night)}
+
+/* Floating mobile bar */
+.dock{position:fixed;left:12px;right:12px;bottom:12px;z-index:60;display:none;gap:10px;padding:8px;border-radius:999px;background:rgba(8,18,34,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.1);box-shadow:0 18px 40px -12px rgba(0,0,0,.5)}
+.dock .btn{flex:1;height:46px}
+
+/* Reveal */
+.rv-in{opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.2,.8,.2,1),transform .8s cubic-bezier(.2,.8,.2,1)}
+.rv-in.in{opacity:1;transform:none}
+
+.no3d #ac{display:none}
+
+/* ---------- Responsive ---------- */
+@media (max-width:1000px){
+  .nav ul{display:none}
+  .grid-svc{grid-template-columns:1fr 1fr}
+  .svc.feature{grid-column:span 2}
+  .bs,.rv,.ct{grid-template-columns:1fr}
+  .process{grid-template-columns:1fr 1fr}
+  .proc::after{display:none}
+}
+@media (max-width:999px){
+  #stage{background:
+    radial-gradient(90vmax 60vmax at 50% 26%,rgba(34,195,238,.18),transparent 60%),
+    linear-gradient(180deg,var(--night) 0%,var(--night-2) 55%,var(--night-3) 100%)}
+  .hero{align-items:flex-start;padding:min(46vh,340px) 0 110px}
+  .hero::before{content:"";position:absolute;inset:auto 0 0 0;height:62%;background:linear-gradient(180deg,transparent,rgba(5,11,22,.85) 40%,var(--night-2));pointer-events:none}
+  .hero .wrap{position:relative}
+  .hero h1{margin:16px 0 14px}
+  .cta-row{margin:24px 0 28px}
+  .cta-row .btn{flex:1}
+  .scroll-cue{display:none}
+  .story-sticky{align-items:flex-end;padding-bottom:92px}
+  .story-panel{max-width:none;width:100%;padding:22px 22px 22px 40px;border-radius:20px;background:rgba(6,14,28,.72);border:1px solid var(--night-line);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+  .rail{left:20px;top:26px;bottom:26px}
+  .steps{min-height:190px}
+  .step h2{font-size:25px}
+  .step p{font-size:15px}
+  .step ul{display:none}
+  .hot .tag{font-size:11px;padding:6px 8px}
+  .hot .line{width:14px}
+  .dock{display:flex}
+  footer .wrap{padding-bottom:96px}
+}
+@media (max-width:760px){
+  .wrap{width:calc(100% - 32px)}
+  .nav .wrap{height:62px}
+  .nav .btn span{display:none}
+  .nav .btn{width:42px;padding:0}
+  .brand small{display:none}
+  .trust{gap:18px}
+  .trust div{min-width:0;flex:1}
+  .trust b{font-size:20px}
+  section.block{padding:76px 0}
+  .grid-svc,.process{grid-template-columns:1fr}
+  .svc.feature{grid-column:auto}
+  .row2{grid-template-columns:1fr}
+  .score .num{font-size:76px}
+  footer .wrap{padding-bottom:96px}
+
+}
+@media (prefers-reduced-motion:reduce){
+  .rv-in{opacity:1;transform:none;transition:none}
+  .live,.scroll-cue i::after{animation:none}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+
+<!-- SVG symbol library -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-snow" viewBox="0 0 24 24"><path d="M12 2v20M4.9 6.5l14.2 11M4.9 17.5l14.2-11M9 3.5l3 2.5 3-2.5M9 20.5l3-2.5 3 2.5M3 10l3.6.6L5.8 14M21 10l-3.6.6.8 3.4"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M3.5 20.5l1.4-4.2A8.5 8.5 0 1 1 8 19.3z"/><path d="M9 10.5h.01M12 10.5h.01M15 10.5h.01"/></symbol>
+  <symbol id="i-wrench" viewBox="0 0 24 24"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8z"/></symbol>
+  <symbol id="i-install" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="7" rx="2"/><path d="M6 8h12M7 15l-1 3M12 15v4M17 15l1 3"/></symbol>
+  <symbol id="i-swap" viewBox="0 0 24 24"><path d="M4 8h14l-4-4M20 16H6l4 4"/></symbol>
+  <symbol id="i-washer" viewBox="0 0 24 24"><rect x="4" y="2.5" width="16" height="19" rx="2.5"/><circle cx="12" cy="13.5" r="4.5"/><path d="M7.5 6h.01M10.5 6h.01"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="i-insta" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></symbol>
+  <symbol id="i-tag" viewBox="0 0 24 24"><path d="M20.6 13.4l-7.2 7.2a2 2 0 0 1-2.8 0L2 12V2h10l8.6 8.6a2 2 0 0 1 0 2.8z"/><path d="M7 7h.01"/></symbol>
+  <symbol id="i-cart" viewBox="0 0 24 24"><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M2 3h3l2.7 12.4a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L21 7H6"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6-4.9-4.6 6.6-.8z"/></symbol>
+  <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></symbol>
+</svg>
+
+<div id="stage" aria-hidden="true">
+  <canvas id="ac"></canvas>
+  <div class="hot" data-k="filter"><span class="dot"></span><span class="line"></span><span class="tag">Air filters</span></div>
+  <div class="hot" data-k="coil"><span class="dot"></span><span class="line"></span><span class="tag">Evaporator coil</span></div>
+  <div class="hot" data-k="fan"><span class="dot"></span><span class="line"></span><span class="tag">Cross-flow blower</span></div>
+  <div class="hot" data-k="motor"><span class="dot"></span><span class="line"></span><span class="tag">Fan motor</span></div>
+  <div class="hot" data-k="pcb"><span class="dot"></span><span class="line"></span><span class="tag">Control PCB</span></div>
+  <div class="hot" data-k="louver"><span class="dot"></span><span class="line"></span><span class="tag">Swing louver</span></div>
+</div>
+
+<header class="nav" id="nav">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Sachin Electrical home">
+      <span class="mark"><svg class="ico" style="stroke-width:2"><use href="#i-snow"/></svg></span>
+      <span><b>Sachin Electrical</b><small>AC EXPERTS · GURUGRAM</small></span>
+    </a>
+    <ul>
+      <li><a href="#inside">Inside your AC</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#buy-sell">Buy &amp; Sell</a></li>
+      <li><a href="#reviews">Reviews</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a class="btn btn-primary" href="tel:+919518872077" aria-label="Call 095188 72077"><svg class="ico"><use href="#i-phone"/></svg><span>095188 72077</span></a>
+  </div>
+</header>
+
+<main id="top">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-copy">
+        <span class="pill"><i class="live"></i>Open 24 hours · Sector 85, Gurugram</span>
+        <h1>Keep your cool.<br>We'll <em>handle the AC.</em></h1>
+        <p class="lead">AC repair, servicing, installation and buying or selling air conditioners in Gurugram, done properly by a technician who turns up on time. Multi-brand, including LG, Samsung and Voltas.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="tel:+919518872077"><svg class="ico"><use href="#i-phone"/></svg>Call now</a>
+          <a class="btn btn-ghost" href="https://wa.me/919518872077?text=Hi%20Sachin%20Electrical%2C%20I%20need%20help%20with%20my%20AC." target="_blank" rel="noopener"><svg class="ico"><use href="#i-chat"/></svg>WhatsApp us</a>
+        </div>
+        <div class="trust">
+          <div><b>4.5 <svg class="star"><use href="#i-star"/></svg></b><span>Google rating</span></div>
+          <div><b>24/7</b><span>Open every day</span></div>
+          <div><b>Multi&#8209;brand</b><span>Split &amp; more</span></div>
+        </div>
+      </div>
+    </div>
+    <a class="scroll-cue" href="#inside"><i></i>Look inside</a>
+  </section>
+
+  <!-- STORY -->
+  <section class="story" id="inside">
+    <div class="story-sticky">
+      <div class="wrap">
+        <div class="story-panel">
+          <div class="rail"><i id="railFill"></i></div>
+          <div class="story-head"><span class="eyebrow">Inside your AC</span><span class="count"><b id="stepNo">01</b> / 07</span></div>
+          <div class="steps">
+            <article class="step on"><h2>It starts with a proper check.</h2><p>Cooling, airflow, gas pressure and wiring all get tested before a single screw comes out, so you get an honest diagnosis and the price before any work starts.</p><ul><li>Cooling test</li><li>Gas pressure</li><li>Error codes</li></ul></article>
+            <article class="step"><h2>Opened up, gently.</h2><p>Front panels and clips are handled with care. No broken tabs and no scratched fascia, so your AC looks the same when we leave.</p><ul><li>Careful handling</li><li>No broken clips</li></ul></article>
+            <article class="step"><h2>Filters out. Dust gone.</h2><p>Clogged filters are the most common reason an AC cools poorly and costs more to run. We wash them, or replace them when they're worn out.</p><ul><li>Filter wash</li><li>Filter replacement</li></ul></article>
+            <article class="step"><h2>Every part, accounted for.</h2><p>For a deep service or a real repair, the unit comes apart properly: covers, coil, blower, motor and control board.</p><ul><li>Full teardown</li><li>Preventive maintenance</li></ul></article>
+            <article class="step"><h2>Clean coil. Free-spinning blower.</h2><p>Dirt packed into the evaporator fins and blower wheel cuts airflow and causes musty smells. A thorough wash brings the chill back.</p><ul><li>Jet cleaning</li><li>Drain tray flush</li><li>Bad smell fix</li></ul></article>
+            <article class="step"><h2>PCB &amp; motor repair.</h2><p>AC won't start, lights blinking, an error code, a noisy fan motor? We trace the fault on the board and the motor instead of guessing and swapping parts.</p><ul><li>PCB repair</li><li>Motor &amp; capacitor</li><li>Wiring faults</li></ul></article>
+            <article class="step"><h2>Back together. Colder than before.</h2><p>Reassembled, tested at full load and the workspace left neat. Customers mention this one in their reviews more than anything else.</p><ul><li>Full-load test</li><li>Clean workspace</li></ul></article>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <div class="sheet">
+    <section class="block" id="services">
+      <div class="wrap">
+        <div class="sec-head rv-in">
+          <div><span class="kicker">What we do</span><h2>Everything your AC needs, under one number.</h2></div>
+          <p>Mostly air conditioners: fixing them, servicing them, installing them, and buying and selling them. Washing machines and microwaves too.</p>
+        </div>
+        <div class="grid-svc">
+          <article class="svc feature rv-in">
+            <div class="ic"><svg class="ico"><use href="#i-wrench"/></svg></div>
+            <h3>AC Repair</h3>
+            <p>Not cooling, leaking water, tripping, making noise or showing an error code? We find the actual fault and fix it, whether it's the gas, the PCB, the motor or the wiring.</p>
+            <div class="tags"><span>Not cooling</span><span>Water leakage</span><span>Gas leak &amp; charging</span><span>PCB faults</span><span>Fan motor</span><span>Noise &amp; vibration</span></div>
+          </article>
+          <article class="svc rv-in">
+            <div class="ic"><svg class="ico"><use href="#i-spark"/></svg></div>
+            <h3>AC Service</h3>
+            <p>Jet cleaning, filter wash or replacement, and preventive maintenance so it keeps cooling and the bills stay lower.</p>
+            <div class="tags"><span>Jet service</span><span>Filters</span><span>Preventive</span></div>
+          </article>
+          <article class="svc rv-in">
+            <div class="ic"><svg class="ico"><use href="#i-install"/></svg></div>
+            <h3>Installation</h3>
+            <p>New AC installs, uninstall and reinstall when you move house, and outdoor unit mounting done safely.</p>
+            <div class="tags"><span>Indoor &amp; outdoor</span><span>Shifting</span></div>
+          </article>
+          <article class="svc rv-in">
+            <div class="ic"><svg class="ico"><use href="#i-swap"/></svg></div>
+            <h3>Buy &amp; Sell ACs</h3>
+            <p>Need an AC, or want to get rid of an old one? We help with both: the right unit for your room, and a fair price for your old AC.</p>
+            <div class="tags"><span>New &amp; used</span><span>Old AC pickup</span></div>
+          </article>
+          <article class="svc rv-in">
+            <div class="ic"><svg class="ico"><use href="#i-washer"/></svg></div>
+            <h3>Appliance Repair</h3>
+            <p>Washing machine and microwave repair from the same team you already trust with your AC.</p>
+            <div class="tags"><span>Washing machine</span><span>Microwave</span></div>
+          </article>
+        </div>
+        <div class="brands rv-in">
+          <span>Brands we service</span><b>LG</b><b>Samsung</b><b>Voltas</b><span>and most other brands</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- BUY & SELL -->
+    <section class="block" id="buy-sell" style="padding-top:0">
+      <div class="wrap">
+        <div class="sec-head rv-in">
+          <div><span class="kicker">Buy &amp; Sell</span><h2>Buying a new AC or selling your old one?</h2></div>
+          <p>Tell us your room and budget, and we'll suggest the right unit and install it. Selling? We inspect it, uninstall it and take it away.</p>
+        </div>
+        <div class="bs">
+          <div class="bs-cards">
+            <article class="bs-card rv-in">
+              <div class="ic"><svg class="ico"><use href="#i-cart"/></svg></div>
+              <div>
+                <h3>Buy an AC</h3>
+                <p>Get the right tonnage for your room, not just the most expensive model.</p>
+                <ul>
+                  <li><svg class="ico"><use href="#i-check"/></svg>New and checked second-hand units</li>
+                  <li><svg class="ico"><use href="#i-check"/></svg>Supply plus installation, sorted together</li>
+                  <li><svg class="ico"><use href="#i-check"/></svg>Honest advice on brand and budget</li>
+                </ul>
+              </div>
+            </article>
+            <article class="bs-card rv-in">
+              <div class="ic"><svg class="ico"><use href="#i-tag"/></svg></div>
+              <div>
+                <h3>Sell your old AC</h3>
+                <p>Upgrading or moving? Turn your old unit into cash without the hassle.</p>
+                <ul>
+                  <li><svg class="ico"><use href="#i-check"/></svg>Fair offer after a quick inspection</li>
+                  <li><svg class="ico"><use href="#i-check"/></svg>We uninstall and pick it up</li>
+                  <li><svg class="ico"><use href="#i-check"/></svg>Working or not, ask us anyway</li>
+                </ul>
+              </div>
+            </article>
+          </div>
+          <div class="tool rv-in" id="tonnage">
+            <h3>What size AC do you need?</h3>
+            <p>A quick rule-of-thumb estimate. We confirm it on visit.</p>
+            <label for="area">Room size <b><span id="areaOut">150</span> sq ft</b></label>
+            <input type="range" id="area" min="60" max="400" step="10" value="150">
+            <label class="chk"><input type="checkbox" id="hot">Top floor, or the room gets direct sun</label>
+            <div class="result">
+              <div><div class="big" id="ton">1.5 Ton</div><small id="tonNote">Good for a typical bedroom or small living room.</small></div>
+              <a class="btn btn-primary" id="tonWa" href="#" target="_blank" rel="noopener"><svg class="ico"><use href="#i-chat"/></svg>Get a quote</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROCESS -->
+    <section class="block" style="padding-top:0">
+      <div class="wrap">
+        <div class="sec-head rv-in">
+          <div><span class="kicker">How it works</span><h2>One call. Sorted.</h2></div>
+        </div>
+        <div class="process">
+          <div class="proc rv-in"><span class="n">01</span><h3>Call or WhatsApp</h3><p>Tell us the problem, day or night. We're open 24 hours.</p></div>
+          <div class="proc rv-in"><span class="n">02</span><h3>Technician arrives on time</h3><p>Punctual visits come up again and again in our reviews.</p></div>
+          <div class="proc rv-in"><span class="n">03</span><h3>Clear price first</h3><p>We diagnose, explain the fault and quote before starting work.</p></div>
+          <div class="proc rv-in"><span class="n">04</span><h3>Fixed, tested, cleaned up</h3><p>Tested at full load, and your space is left neat.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- REVIEWS -->
+    <section class="block reviews" id="reviews">
+      <div class="wrap">
+        <div class="sec-head rv-in">
+          <div><span class="kicker">Reviews</span><h2>Gurugram homes keep calling back.</h2></div>
+          <p>Real ratings from customers on our Google Business Profile.</p>
+        </div>
+        <div class="rv">
+          <div class="score rv-in">
+            <div>
+              <div class="num" id="scoreNum">4.5</div>
+              <div class="stars" aria-label="4.5 out of 5 stars">
+                <svg viewBox="0 0 24 24" fill="#f5b301"><use href="#i-star"/></svg>
+                <svg viewBox="0 0 24 24" fill="#f5b301"><use href="#i-star"/></svg>
+                <svg viewBox="0 0 24 24" fill="#f5b301"><use href="#i-star"/></svg>
+                <svg viewBox="0 0 24 24" fill="#f5b301"><use href="#i-star"/></svg>
+                <svg viewBox="0 0 24 24"><defs><linearGradient id="half"><stop offset="50%" stop-color="#f5b301"/><stop offset="50%" stop-color="#dfe5ec"/></linearGradient></defs><use href="#i-star" fill="url(#half)"/></svg>
+              </div>
+              <small>Average from 16 Google reviews</small>
+            </div>
+            <a class="btn btn-line" href="https://www.google.com/maps/search/?api=1&query=Sachin+electrical+Sector+85+Gurugram" target="_blank" rel="noopener">Read the reviews on Google →</a>
+          </div>
+          <div class="quote rv-in">
+            <div>
+              <blockquote>“Always ready on single call.”</blockquote>
+              <cite style="display:block;margin-top:14px">Akash Ranga · Google review</cite>
+            </div>
+            <div>
+              <p style="color:#9fb0c6;font-size:13px;margin-bottom:12px">What customers mention most</p>
+              <div class="themes">
+                <span><svg class="ico"><use href="#i-check"/></svg>Arrives on time</span>
+                <span><svg class="ico"><use href="#i-check"/></svg>Reasonable prices</span>
+                <span><svg class="ico"><use href="#i-check"/></svg>Leaves the space neat</span>
+                <span><svg class="ico"><use href="#i-check"/></svg>Good behaviour</span>
+                <span><svg class="ico"><use href="#i-check"/></svg>Knows the job</span>
+                <span><svg class="ico"><use href="#i-check"/></svg>Repairs that last</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- CONTACT -->
+  <section class="block contact sheet" id="contact" style="border-radius:0">
+    <div class="wrap">
+      <div class="sec-head rv-in">
+        <div><span class="kicker">Contact</span><h2>AC giving you trouble? Call now.</h2></div>
+        <p>Open 24 hours. Based in Sector 85 and serving homes and offices across Gurugram.</p>
+      </div>
+      <div class="ct">
+        <div class="ct-card rv-in">
+          <div class="ct-list">
+            <a class="ct-item" href="tel:+919518872077"><span class="ic"><svg class="ico"><use href="#i-phone"/></svg></span><span><small>Call</small><b>095188 72077</b></span></a>
+            <a class="ct-item" href="https://wa.me/919518872077" target="_blank" rel="noopener"><span class="ic"><svg class="ico"><use href="#i-chat"/></svg></span><span><small>WhatsApp</small><b>+91 95188 72077</b></span></a>
+            <div class="ct-item"><span class="ic"><svg class="ico"><use href="#i-clock"/></svg></span><span><small>Hours</small><b>Open 24 hours, all days</b></span></div>
+            <a class="ct-item" href="https://www.google.com/maps/search/?api=1&query=Sachin+electrical+Sector+85+Gurugram" target="_blank" rel="noopener"><span class="ic"><svg class="ico"><use href="#i-pin"/></svg></span><span><small>Address</small><b>Sector 85, Sikanderpur Sector 85 Rd, Gurugram, Haryana 122012</b></span></a>
+            <a class="ct-item" href="https://www.instagram.com/duhan000001" target="_blank" rel="noopener"><span class="ic"><svg class="ico"><use href="#i-insta"/></svg></span><span><small>Instagram</small><b>@duhan000001</b></span></a>
+          </div>
+          <div class="map"><iframe title="Map to Sachin Electrical, Sector 85 Gurugram" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=Sachin%20electrical%2C%20Sector%2085%2C%20Gurugram&z=14&output=embed"></iframe></div>
+        </div>
+        <form class="ct-card wa rv-in" id="waForm">
+          <h3>Book a visit on WhatsApp</h3>
+          <p>Fill this in and it opens WhatsApp with your message ready to send.</p>
+          <div class="row2">
+            <label class="field"><span>Your name</span><input name="name" required autocomplete="name" placeholder="Name"></label>
+            <label class="field"><span>Sector / area</span><input name="area" placeholder="e.g. Sector 85"></label>
+          </div>
+          <label class="field"><span>Service</span>
+            <select name="svc">
+              <option>AC repair</option><option>AC service / cleaning</option><option>AC installation</option><option>Uninstall &amp; reinstall</option><option>Buy an AC</option><option>Sell my old AC</option><option>Washing machine repair</option><option>Microwave repair</option>
+            </select>
+          </label>
+          <label class="field"><span>What's the problem? <em style="opacity:.6;font-style:normal">(optional)</em></span><textarea name="msg" placeholder="e.g. 1.5 ton LG split, not cooling since yesterday"></textarea></label>
+          <button class="btn btn-primary" type="submit"><svg class="ico"><use href="#i-chat"/></svg>Send on WhatsApp</button>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="yr">2026</span> Sachin Electrical · Sector 85, Gurugram</span>
+    <span><a href="tel:+919518872077">095188 72077</a> · Open 24 hours</span>
+  </div>
+</footer>
+
+<div class="dock">
+  <a class="btn btn-ghost" href="https://wa.me/919518872077" target="_blank" rel="noopener"><svg class="ico"><use href="#i-chat"/></svg>WhatsApp</a>
+  <a class="btn btn-primary" href="tel:+919518872077"><svg class="ico"><use href="#i-phone"/></svg>Call now</a>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(() => {
+"use strict";
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const ss = (a, b, x) => { const t = clamp((x - a) / (b - a)); return t * t * (3 - 2 * t); };
+const lerp = (a, b, t) => a + (b - a) * t;
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const WA = 'https://wa.me/919518872077?text=';
+
+/* ================= Page UI ================= */
+$('#yr').textContent = new Date().getFullYear();
+
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+}), { threshold: .14, rootMargin: '0px 0px -40px 0px' });
+$$('.rv-in').forEach((el, i) => { el.style.transitionDelay = (i % 4) * 70 + 'ms'; io.observe(el); });
+
+// tonnage estimator
+const area = $('#area'), hot = $('#hot');
+function tonnage() {
+  const a = +area.value; $('#areaOut').textContent = a;
+  const levels = [[120, 1, 'Fits a small bedroom or study.'], [180, 1.5, 'Good for a typical bedroom or small living room.'], [250, 2, 'Suits a large bedroom or living room.'], [1e9, 2.5, 'Big space. You may be better off with two units.']];
+  let i = levels.findIndex(l => a <= l[0]);
+  if (hot.checked) i = Math.min(levels.length - 1, i + 1);
+  const [, t, note] = levels[i];
+  const label = (t === 2.5 ? '2.5+' : t) + ' Ton';
+  $('#ton').textContent = label; $('#tonNote').textContent = note;
+  $('#tonWa').href = WA + encodeURIComponent(`Hi Sachin Electrical, I'd like a quote for a ${label} AC for a ~${a} sq ft room${hot.checked ? ' (top floor / sunny)' : ''}.`);
+}
+area.addEventListener('input', tonnage); hot.addEventListener('change', tonnage); tonnage();
+
+// WhatsApp booking form
+$('#waForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const f = new FormData(e.target);
+  const lines = [`Hi Sachin Electrical, I'm ${f.get('name')}.`, `Service: ${f.get('svc')}`];
+  if (f.get('area')) lines.push(`Area: ${f.get('area')}`);
+  if (f.get('msg')) lines.push(`Details: ${f.get('msg')}`);
+  window.open(WA + encodeURIComponent(lines.join('\n')), '_blank', 'noopener');
+});
+
+/* ================= Scroll state ================= */
+const nav = $('#nav'), hero = $('.hero'), story = $('#inside'), sheet = $('.sheet');
+const steps = $$('.step'), stepNo = $('#stepNo'), rail = $('#railFill'), storyPanel = $('.story-panel');
+let M = {};
+function measure() {
+  M.vh = innerHeight; M.heroH = hero.offsetHeight;
+  M.storyTop = story.offsetTop; M.storyLen = story.offsetHeight - innerHeight;
+  M.storyEnd = story.offsetTop + story.offsetHeight;
+}
+measure(); addEventListener('resize', measure);
+let targetP = 0, curStep = -1;
+function onScroll() {
+  const y = scrollY;
+  targetP = clamp((y - M.storyTop) / M.storyLen);
+  nav.classList.toggle('solid', y > M.storyEnd - 80);
+  const i = Math.min(steps.length - 1, Math.floor(targetP * steps.length));
+  if (i !== curStep) {
+    curStep = i;
+    steps.forEach((s, k) => s.classList.toggle('on', k === i));
+    stepNo.textContent = String(i + 1).padStart(2, '0');
+    storyPanel.classList.toggle('light', i >= 3 && i <= 5); // dismantled steps: dark text on a white card
+  }
+  rail.style.height = (targetP * 100) + '%';
+}
+addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+/* ================= 3D ================= */
+const canvas = $('#ac');
+if (!window.THREE) { document.documentElement.classList.add('no3d'); return; }
+let renderer;
+try { renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' }); }
+catch (err) { document.documentElement.classList.add('no3d'); return; }
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.outputEncoding = THREE.sRGBEncoding;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.05;
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 80);
+
+// --- studio environment for reflections
+(() => {
+  const pm = new THREE.PMREMGenerator(renderer);
+  const env = new THREE.Scene();
+  env.add(new THREE.Mesh(new THREE.BoxGeometry(14, 9, 14), new THREE.MeshBasicMaterial({ color: 0x1c2a3c, side: THREE.BackSide })));
+  const box = (w, h, c, p) => { const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ color: c, side: THREE.DoubleSide })); m.position.set(...p); m.lookAt(0, 0, 0); env.add(m); };
+  box(7, 2.6, new THREE.Color(7, 7, 7.2), [0, 4.3, 1.5]);
+  box(3, 4.5, new THREE.Color(3.4, 3.6, 4), [-6.5, 1, 3.5]);
+  box(2.2, 4.5, new THREE.Color(1, 2.6, 3.8), [6.5, .6, -2]);
+  box(9, 1.4, new THREE.Color(1.3, 1.4, 1.5), [0, -4.3, 4]);
+  scene.environment = pm.fromScene(env, 0.035).texture;
+  pm.dispose();
+})();
+scene.add(new THREE.HemisphereLight(0xe2f2ff, 0x18222f, .45));
+const key = new THREE.DirectionalLight(0xffffff, 1.5); key.position.set(-3, 4, 5); scene.add(key);
+const rim = new THREE.DirectionalLight(0x7fd6ff, 1.4); rim.position.set(4, 1.5, -3); scene.add(rim);
+
+// --- canvas textures
+const aniso = renderer.capabilities.getMaxAnisotropy();
+function ctex(w, h, draw, rep) {
+  const c = document.createElement('canvas'); c.width = w; c.height = h; draw(c.getContext('2d'), w, h);
+  const t = new THREE.CanvasTexture(c); t.encoding = THREE.sRGBEncoding; t.anisotropy = aniso;
+  if (rep) { t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(...rep); }
+  return t;
+}
+const finTex = rep => ctex(64, 64, (g, w, h) => {
+  g.fillStyle = '#c3ccd6'; g.fillRect(0, 0, w, h);
+  for (let x = 0; x < w; x += 4) { g.fillStyle = '#7f8c99'; g.fillRect(x, 0, 1, h); g.fillStyle = '#eef3f7'; g.fillRect(x + 2, 0, 1, h); }
+}, rep);
+const filterTex = ctex(128, 128, (g, w, h) => {
+  g.clearRect(0, 0, w, h); g.strokeStyle = 'rgba(214,232,248,1)'; g.lineWidth = 1.6;
+  for (let i = 0; i <= w; i += 8) { g.beginPath(); g.moveTo(i, 0); g.lineTo(i, h); g.stroke(); g.beginPath(); g.moveTo(0, i); g.lineTo(w, i); g.stroke(); }
+}, [10, 3]);
+const grilleTex = ctex(32, 32, (g, w, h) => {
+  g.fillStyle = '#e9edf1'; g.fillRect(0, 0, w, h); g.fillStyle = '#2a3442'; g.fillRect(6, 0, 20, h);
+}, [80, 1]);
+const pcbTex = ctex(256, 256, (g, w, h) => {
+  g.fillStyle = '#11603c'; g.fillRect(0, 0, w, h);
+  let s = 7; const rnd = () => (s = (s * 9301 + 49297) % 233280) / 233280;
+  g.strokeStyle = '#2c9b62'; g.lineWidth = 2.2; g.lineCap = 'round';
+  for (let i = 0; i < 46; i++) {
+    let x = rnd() * w, y = rnd() * h; g.beginPath(); g.moveTo(x, y);
+    for (let k = 0; k < 4; k++) { if (k % 2) x += (rnd() - .5) * 140; else y += (rnd() - .5) * 140; g.lineTo(x, y); }
+    g.stroke(); g.fillStyle = '#d8b35a'; g.beginPath(); g.arc(x, y, 3, 0, 7); g.fill();
+  }
+  g.fillStyle = 'rgba(255,255,255,.75)'; g.font = 'bold 13px monospace'; g.fillText('SE-CTRL  REV.2', 14, 244);
+});
+const dispTex = ctex(256, 96, (g, w, h) => {
+  g.clearRect(0, 0, w, h);
+  g.shadowColor = '#38bdf8'; g.shadowBlur = 16; g.fillStyle = '#9ee9ff';
+  g.font = '700 64px Sora, Arial, sans-serif'; g.textAlign = 'right'; g.textBaseline = 'middle';
+  g.fillText('24°', w - 18, h / 2 + 4);
+  g.font = '700 36px Arial'; g.textAlign = 'left'; g.fillText('❄', 18, h / 2 + 2);
+});
+const spriteTex = ctex(64, 64, (g, w) => {
+  const r = g.createRadialGradient(w / 2, w / 2, 0, w / 2, w / 2, w / 2);
+  r.addColorStop(0, 'rgba(255,255,255,1)'); r.addColorStop(.35, 'rgba(255,255,255,.45)'); r.addColorStop(1, 'rgba(255,255,255,0)');
+  g.fillStyle = r; g.fillRect(0, 0, w, w);
+});
+
+// --- materials
+const MAT = {
+  shell: new THREE.MeshPhysicalMaterial({ color: 0xf2f4f7, roughness: .3, metalness: 0, clearcoat: .8, clearcoatRoughness: .16 }),
+  panel: new THREE.MeshPhysicalMaterial({ color: 0xf7f9fb, roughness: .22, metalness: 0, clearcoat: 1, clearcoatRoughness: .08 }),
+  inner: new THREE.MeshStandardMaterial({ color: 0xc4ccd5, roughness: .7 }),
+  dark: new THREE.MeshStandardMaterial({ color: 0x141b26, roughness: .45 }),
+  glass: new THREE.MeshPhysicalMaterial({ color: 0x0b1018, roughness: .08, clearcoat: 1 }),
+  chrome: new THREE.MeshStandardMaterial({ color: 0xdfe6ee, metalness: 1, roughness: .15 }),
+  plate: new THREE.MeshStandardMaterial({ color: 0xaab4bf, metalness: .85, roughness: .35 }),
+  copper: new THREE.MeshStandardMaterial({ color: 0xd0794a, metalness: 1, roughness: .26 }),
+  fan: new THREE.MeshStandardMaterial({ color: 0xd3dae2, roughness: .42 }),
+  motor: new THREE.MeshStandardMaterial({ color: 0x353e4b, metalness: .65, roughness: .38 }),
+  pcb: new THREE.MeshStandardMaterial({ map: pcbTex, roughness: .5 }),
+  chip: new THREE.MeshStandardMaterial({ color: 0x111418, roughness: .35 }),
+  capBlue: new THREE.MeshStandardMaterial({ color: 0x2457c5, roughness: .35 }),
+  white: new THREE.MeshStandardMaterial({ color: 0xf0f0ea, roughness: .5 }),
+  filter: new THREE.MeshStandardMaterial({ map: filterTex, alphaTest: .35, side: THREE.DoubleSide, roughness: .8, color: 0xcfeaff }),
+  filterFrame: new THREE.MeshStandardMaterial({ color: 0x8fb3cf, roughness: .45 }),
+  grille: new THREE.MeshStandardMaterial({ map: grilleTex, roughness: .5 }),
+  disp: new THREE.MeshBasicMaterial({ map: dispTex, transparent: true, toneMapped: false, depthWrite: false }),
+};
+
+// --- geometry helpers (profile sweep with smooth normals)
+function Geo() { this.p = []; this.n = []; }
+Geo.prototype.tri = function (a, b, c, na, nb, nc, fn) {
+  const ab = [b[0] - a[0], b[1] - a[1], b[2] - a[2]], ac = [c[0] - a[0], c[1] - a[1], c[2] - a[2]];
+  const cr = [ab[1] * ac[2] - ab[2] * ac[1], ab[2] * ac[0] - ab[0] * ac[2], ab[0] * ac[1] - ab[1] * ac[0]];
+  if (cr[0] * fn[0] + cr[1] * fn[1] + cr[2] * fn[2] < 0) { [b, c] = [c, b];[nb, nc] = [nc, nb]; }
+  this.p.push(...a, ...b, ...c); this.n.push(...na, ...nb, ...nc);
+};
+Geo.prototype.quad = function (a, b, c, d, na, nb, nc, nd, fn) { this.tri(a, b, c, na, nb, nc, fn); this.tri(a, c, d, na, nc, nd, fn); };
+Geo.prototype.build = function () {
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute(this.p, 3));
+  g.setAttribute('normal', new THREE.Float32BufferAttribute(this.n, 3));
+  return g;
+};
+const P3 = (x, q) => [x, q.v, q.u], N3 = q => [0, q.nv, q.nu];
+function withNormals(pts, closed) {
+  const n = pts.length;
+  pts.forEach((p, i) => {
+    const a = pts[closed ? (i - 1 + n) % n : Math.max(0, i - 1)], b = pts[closed ? (i + 1) % n : Math.min(n - 1, i + 1)];
+    const du = b.u - a.u, dv = b.v - a.v, l = Math.hypot(du, dv) || 1;
+    p.nu = dv / l; p.nv = -du / l;
+  });
+  return pts;
+}
+function capFaces(g, poly, xs) {
+  const tris = THREE.ShapeUtils.triangulateShape(poly.map(p => new THREE.Vector2(p.u, p.v)), []);
+  for (const [x, s] of xs) {
+    const n = [s, 0, 0];
+    for (const t of tris) { const a = poly[t[0]], b = poly[t[1]], c = poly[t[2]]; g.tri(P3(x, a), P3(x, b), P3(x, c), n, n, n, n); }
+  }
+}
+// thin shell swept along X from an open profile strip
+function shellGeo(pts, w, th) {
+  const g = new Geo(), x0 = -w / 2, x1 = w / 2;
+  const out = pts.map(p => ({ u: p.u, v: p.v, nu: p.nu, nv: p.nv }));
+  const inn = pts.map(p => ({ u: p.u - p.nu * th, v: p.v - p.nv * th, nu: -p.nu, nv: -p.nv }));
+  for (let i = 0; i < pts.length - 1; i++) for (const L of [out, inn]) {
+    const a = L[i], b = L[i + 1];
+    g.quad(P3(x0, a), P3(x1, a), P3(x1, b), P3(x0, b), N3(a), N3(a), N3(b), N3(b), [0, a.nv + b.nv, a.nu + b.nu]);
+  }
+  for (const [i, j] of [[0, 1], [pts.length - 1, pts.length - 2]]) {
+    const o = out[i], q = inn[i], tu = o.u - out[j].u, tv = o.v - out[j].v, l = Math.hypot(tu, tv), n = [0, tv / l, tu / l];
+    g.quad(P3(x0, o), P3(x1, o), P3(x1, q), P3(x0, q), n, n, n, n, n);
+  }
+  capFaces(g, [...out, ...inn.slice().reverse()], [[x0, -1], [x1, 1]]);
+  return g.build();
+}
+// solid slab from a closed profile
+function slabGeo(pts, t) {
+  const g = new Geo(), x0 = -t / 2, x1 = t / 2;
+  for (let i = 0; i < pts.length; i++) {
+    const a = pts[i], b = pts[(i + 1) % pts.length];
+    g.quad(P3(x0, a), P3(x1, a), P3(x1, b), P3(x0, b), N3(a), N3(a), N3(b), N3(b), [0, a.nv + b.nv, a.nu + b.nu]);
+  }
+  capFaces(g, pts, [[x0, -1], [x1, 1]]);
+  return g.build();
+}
+function rrect(w, h, r) {
+  const s = new THREE.Shape(), x = -w / 2, y = -h / 2;
+  s.moveTo(x + r, y); s.lineTo(x + w - r, y); s.quadraticCurveTo(x + w, y, x + w, y + r);
+  s.lineTo(x + w, y + h - r); s.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  s.lineTo(x + r, y + h); s.quadraticCurveTo(x, y + h, x, y + h - r);
+  s.lineTo(x, y + r); s.quadraticCurveTo(x, y, x + r, y); return s;
+}
+function rbox(w, h, d, r, b = .004) {
+  const g = new THREE.ExtrudeGeometry(rrect(w - 2 * b, h - 2 * b, r), { depth: d - 2 * b, bevelEnabled: true, bevelThickness: b, bevelSize: b, bevelSegments: 3, curveSegments: 8 });
+  g.center(); return g;
+}
+const mesh = (geo, mat, pos, rot) => { const m = new THREE.Mesh(geo, mat); if (pos) m.position.set(...pos); if (rot) m.rotation.set(...rot); return m; };
+
+/* ---------- The split AC (indoor unit) ---------- */
+const W = 2.2, H = 0.68, D = 0.56, CAP = 0.05, WI = W - 2 * CAP, TH = 0.022;
+const D2 = D / 2, H2 = H / 2, rBB = .05, rFB = .2, rFT = .08, rBT = .05;
+const prof = [];
+const arc = (cu, cv, r, a0, a1, tag, n) => { for (let i = 0; i <= n; i++) { const a = a0 + (a1 - a0) * i / n; prof.push({ u: cu + r * Math.cos(a), v: cv + r * Math.sin(a), tag }); } };
+const seg = (u0, v0, u1, v1, tag, n) => { for (let i = 1; i < n; i++) { const t = i / n; prof.push({ u: u0 + (u1 - u0) * t, v: v0 + (v1 - v0) * t, tag }); } };
+arc(-D2 + rBB, -H2 + rBB, rBB, Math.PI, 1.5 * Math.PI, 'bb', 6);
+seg(-D2 + rBB, -H2, D2 - rFB, -H2, 'bottom', 10);
+arc(D2 - rFB, -H2 + rFB, rFB, -Math.PI / 2, 0, 'fb', 30);
+seg(D2, -H2 + rFB, D2, H2 - rFT, 'front', 8);
+arc(D2 - rFT, H2 - rFT, rFT, 0, Math.PI / 2, 'ft', 12);
+seg(D2 - rFT, H2, -D2 + rBT, H2, 'top', 12);
+arc(-D2 + rBT, H2 - rBT, rBT, Math.PI / 2, Math.PI, 'bt', 6);
+seg(-D2, H2 - rBT, -D2, -H2 + rBB, 'back', 8);
+withNormals(prof, true);
+const pick = tags => prof.filter(p => tags.includes(p.tag));
+
+const model = new THREE.Group();
+scene.add(model);
+const parts = [];
+function part(obj, base, ex, exRot = [0, 0, 0], delay = 0) {
+  obj.position.set(...base);
+  obj.userData = { base: new THREE.Vector3(...base), ex: new THREE.Vector3(...ex), exRot, delay };
+  model.add(obj); parts.push(obj); return obj;
+}
+
+// Side caps
+const capGeo = slabGeo(prof, CAP);
+const sideL = part(mesh(capGeo, MAT.shell), [-(W / 2 - CAP / 2), 0, 0], [-.62, 0, .05], [0, .25, 0], .05);
+const sideR = part(mesh(capGeo, MAT.shell), [(W / 2 - CAP / 2), 0, 0], [.78, 0, .05], [0, -.25, 0], .05);
+
+// Top cover with grille
+const topG = new THREE.Group();
+topG.add(mesh(shellGeo(pick(['ft', 'top', 'bt']), WI, TH), MAT.shell));
+topG.add(mesh(new THREE.PlaneGeometry(WI - .16, .24), MAT.grille, [0, H2 + .0015, -.05], [-Math.PI / 2, 0, 0]));
+part(topG, [0, 0, 0], [0, .5, -.62], [-.12, 0, 0], .0);
+
+// Bottom cover + outlet + louver
+const botG = new THREE.Group();
+botG.add(mesh(shellGeo(pick(['bb', 'bottom', 'fb']), WI, TH), MAT.shell));
+const oa = -0.88; // outlet angle on the front-bottom curve
+const oc = { u: D2 - rFB + rFB * Math.cos(oa), v: -H2 + rFB + rFB * Math.sin(oa) };
+const on = { u: Math.cos(oa), v: Math.sin(oa) };
+botG.add(mesh(new THREE.BoxGeometry(WI - .12, .17, .004), MAT.dark, [0, oc.v + on.v * .002, oc.u + on.u * .002], [-oa, 0, 0]));
+const louver = new THREE.Group();
+const tn = { u: -Math.sin(oa), v: Math.cos(oa) };
+louver.position.set(0, oc.v + on.v * .012 + tn.v * .075, oc.u + on.u * .012 + tn.u * .075);
+louver.rotation.x = -oa;
+louver.add(mesh(rbox(WI - .2, .15, .012, .004, .003), MAT.panel, [0, -.075, 0]));
+botG.add(louver);
+part(botG, [0, 0, 0], [0, -.62, .3], [.15, 0, 0], .08);
+
+// Front panel (hinged at the top)
+const FH = (H2 - rFT) - (-H2 + rFB);
+const front = new THREE.Group();
+const fp = mesh(rbox(WI - .008, FH - .006, .022, .014), MAT.panel, [0, -FH / 2, 0]);
+front.add(fp);
+front.add(mesh(new THREE.BoxGeometry(WI - .5, .004, .004), MAT.chrome, [0, -FH + .05, .012]));
+front.add(mesh(rbox(.2, .068, .006, .02, .002), MAT.glass, [WI / 2 - .26, -FH + .1, .012]));
+const disp = mesh(new THREE.PlaneGeometry(.17, .064), MAT.disp, [WI / 2 - .26, -FH + .1, .0162]);
+front.add(disp);
+part(front, [0, H2 - rFT, D2 - .011], [0, 1.2, .3], [0, 0, 0], .0);
+
+// Filters
+const filterGeo = (() => { const s = rrect(.97, .34, .02); s.holes.push(rrect(.93, .3, .012)); const g = new THREE.ExtrudeGeometry(s, { depth: .012, bevelEnabled: false, curveSegments: 6 }); g.center(); return g; })();
+function makeFilter() {
+  const g = new THREE.Group();
+  g.add(mesh(filterGeo, MAT.filterFrame));
+  g.add(mesh(new THREE.PlaneGeometry(.93, .3), MAT.filter));
+  g.add(mesh(new THREE.BoxGeometry(.012, .3, .012), MAT.filterFrame));
+  g.rotation.x = -.06; return g;
+}
+const filterL = part(makeFilter(), [-.5, .06, D2 - .05], [-.08, .42, .2], [0, .1, 0], .1);
+const filterR = part(makeFilter(), [.5, .06, D2 - .05], [.08, .42, .2], [0, -.1, 0], .1);
+
+// Evaporator coil (Λ shape) with copper hairpins and drain tray
+const coilG = new THREE.Group();
+function coil(len, h, t, pos, rx) {
+  const g = new THREE.Group();
+  const fin = new THREE.MeshStandardMaterial({ map: finTex([len * 50, 1]), metalness: .85, roughness: .38 });
+  g.add(mesh(new THREE.BoxGeometry(len, h, t), [MAT.plate, MAT.plate, MAT.plate, MAT.plate, fin, fin]));
+  for (const sx of [-1, 1]) {
+    g.add(mesh(new THREE.BoxGeometry(.01, h + .02, t + .012), MAT.plate, [sx * (len / 2 + .005), 0, 0]));
+    const rows = Math.floor(h / .06);
+    for (let k = 0; k < rows; k++) {
+      const u = mesh(new THREE.TorusGeometry(.022, .0055, 8, 18, Math.PI), MAT.copper, [sx * (len / 2 + .012), -h / 2 + .05 + k * .06 * (rows > 1 ? (h - .1) / (.06 * (rows - 1)) : 0), (k % 2 ? 1 : -1) * t * .2], [0, Math.PI / 2, sx > 0 ? -Math.PI / 2 : Math.PI / 2]);
+      g.add(u);
+    }
+  }
+  g.position.set(...pos); g.rotation.x = rx; coilG.add(g); return g;
+}
+const coilLen = 1.78, coilX = -.1;
+coil(coilLen, .3, .05, [0, .02, .165], -.18);
+coil(coilLen, .3, .05, [0, .165, -.035], 1.02);
+coilG.add(mesh(rbox(coilLen + .04, .03, .13, .01, .003), MAT.inner, [0, -.155, .17]));
+for (const z of [-.02, .03]) coilG.add(mesh(new THREE.CylinderGeometry(.008, .008, .4, 10), MAT.copper, [-coilLen / 2 - .02, -.05, z], [0, 0, 0]));
+part(coilG, [coilX, 0, 0], [0, .16, .5], [-.08, 0, 0], .2);
+
+// Cross-flow blower
+const fanG = new THREE.Group();
+const fanSpin = new THREE.Group(); fanG.add(fanSpin);
+const fanLen = 1.62, fanR = .088;
+const bladeGeo = new THREE.BoxGeometry(fanLen, .03, .004);
+const blades = new THREE.InstancedMesh(bladeGeo, MAT.fan, 32);
+const dmy = new THREE.Object3D();
+for (let k = 0; k < 32; k++) {
+  const a = k / 32 * Math.PI * 2;
+  dmy.position.set(0, Math.cos(a) * (fanR - .016), Math.sin(a) * (fanR - .016));
+  dmy.rotation.set(a + .55, 0, 0); dmy.updateMatrix(); blades.setMatrixAt(k, dmy.matrix);
+}
+fanSpin.add(blades);
+const discGeo = new THREE.CylinderGeometry(fanR, fanR, .008, 40);
+for (let k = 0; k <= 8; k++) fanSpin.add(mesh(discGeo, MAT.fan, [-fanLen / 2 + k * fanLen / 8, 0, 0], [0, 0, Math.PI / 2]));
+fanSpin.add(mesh(new THREE.CylinderGeometry(.012, .012, fanLen + .14, 12), MAT.chrome, [0, 0, 0], [0, 0, Math.PI / 2]));
+// scroll housing behind fan
+const scrollPts = []; for (let i = 0; i <= 24; i++) { const a = Math.PI * .45 + i / 24 * Math.PI * .95; scrollPts.push({ u: Math.cos(a) * .118, v: Math.sin(a) * .118 }); }
+withNormals(scrollPts, false);
+const scrollM = mesh(shellGeo(scrollPts.slice().reverse(), fanLen + .06, .012), MAT.dark);
+fanG.add(scrollM);
+part(fanG, [-.13, -.105, -.005], [0, -.48, .38], [0, 0, 0], .28);
+const fanX = -.13;
+
+// Fan motor
+const motorG = new THREE.Group();
+motorG.add(mesh(new THREE.CylinderGeometry(.066, .066, .12, 32), MAT.motor, [0, 0, 0], [0, 0, Math.PI / 2]));
+motorG.add(mesh(new THREE.CylinderGeometry(.07, .07, .014, 32), MAT.chrome, [-.05, 0, 0], [0, 0, Math.PI / 2]));
+motorG.add(mesh(new THREE.CylinderGeometry(.07, .07, .014, 32), MAT.chrome, [.05, 0, 0], [0, 0, Math.PI / 2]));
+motorG.add(mesh(new THREE.BoxGeometry(.04, .03, .02), MAT.white, [.02, .07, 0]));
+part(motorG, [.79, -.105, -.005], [.55, -.32, .25], [0, -.5, 0], .3);
+
+// Control PCB
+const pcbG = new THREE.Group();
+pcbG.add(mesh(new THREE.BoxGeometry(.008, .22, .26), [MAT.pcb, MAT.pcb, MAT.pcb, MAT.pcb, MAT.pcb, MAT.pcb]));
+const comp = (geo, mat, y, z, rot) => pcbG.add(mesh(geo, mat, [.004 + (geo.parameters.height || geo.parameters.width) / 2, y, z], rot));
+pcbG.add(mesh(new THREE.BoxGeometry(.012, .05, .05), MAT.chip, [.01, .03, -.05]));
+pcbG.add(mesh(new THREE.BoxGeometry(.008, .025, .04), MAT.chip, [.008, -.05, .06]));
+pcbG.add(mesh(new THREE.BoxGeometry(.03, .04, .055), new THREE.MeshStandardMaterial({ color: 0x1f6fd1, roughness: .4 }), [.019, .06, .07]));
+pcbG.add(mesh(new THREE.CylinderGeometry(.016, .016, .05, 20), MAT.capBlue, [.029, -.06, -.07], [0, 0, Math.PI / 2]));
+pcbG.add(mesh(new THREE.CylinderGeometry(.011, .011, .035, 16), MAT.chip, [.021, -.065, -.02], [0, 0, Math.PI / 2]));
+pcbG.add(mesh(new THREE.BoxGeometry(.016, .02, .07), MAT.white, [.012, -.09, .03]));
+pcbG.add(mesh(new THREE.BoxGeometry(.014, .06, .016), MAT.white, [.011, .05, -.115]));
+part(pcbG, [.95, .09, .09], [.7, .32, .36], [0, -1.32, 0], .32);
+
+// Back plate
+const backG = new THREE.Group();
+backG.add(mesh(new THREE.BoxGeometry(WI, H - .06, .02), MAT.inner, [0, 0, -D2 + .02]));
+backG.add(mesh(new THREE.BoxGeometry(WI - .1, .02, .14), MAT.inner, [0, -H2 + .05, -D2 + .09]));
+part(backG, [0, 0, 0], [0, 0, -.42], [0, 0, 0], .12);
+
+// Cold-air particles
+const NP = 260, pPos = new Float32Array(NP * 3), pCol = new Float32Array(NP * 3), pLife = new Float32Array(NP), pSeed = new Float32Array(NP * 3);
+for (let i = 0; i < NP; i++) { pLife[i] = Math.random(); pSeed[i * 3] = (Math.random() - .5) * (WI - .25); pSeed[i * 3 + 1] = Math.random(); pSeed[i * 3 + 2] = .6 + Math.random() * .6; }
+const pGeo = new THREE.BufferGeometry();
+pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+pGeo.setAttribute('color', new THREE.BufferAttribute(pCol, 3));
+const air = new THREE.Points(pGeo, new THREE.PointsMaterial({ size: .2, map: spriteTex, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, vertexColors: true, toneMapped: false }));
+air.frustumCulled = false;
+model.add(air);
+
+/* ---------- Hotspot labels ---------- */
+const hotEls = Object.fromEntries($$('.hot').map(el => [el.dataset.k, el]));
+const HOT = [
+  { k: 'filter', o: filterL, l: [-.25, .19, 0], a: .30, b: .43 },
+  { k: 'coil', o: coilG, l: [-.55, .33, -.05], a: .47, b: .7 },
+  { k: 'fan', o: fanG, l: [-.45, -.1, .06], a: .47, b: .7 },
+  { k: 'motor', o: motorG, l: [0, .07, 0], a: .47, b: .6 },
+  { k: 'pcb', o: pcbG, l: [0, .12, -.08], a: .47, b: .845 },
+  { k: 'louver', o: botG, l: [-.6, oc.v - .02, oc.u + .02], a: .47, b: .58 },
+];
+
+/* ---------- Camera choreography (story progress → shot) ---------- */
+const KF = [
+  { p: 0, look: [0, 0, 0], off: [0, .22, 4.4], cx: .19 },
+  { p: .07, look: [0, 0, 0], off: [0, .22, 4.4], cx: .19 },
+  { p: .21, look: [.05, .1, .2], off: [-.8, .55, 3.4], cx: .17 },
+  { p: .36, look: [0, .25, .3], off: [-.45, 1.0, 3.6], cx: .17 },
+  { p: .5, look: [.1, .22, .1], off: [-.5, 1.3, 7.1], cx: .15 },
+  { p: .64, look: [-.3, -.12, .5], off: [-.4, .45, 3.7], cx: .2 },
+  { p: .79, look: [1.62, .41, .45], off: [-.7, .3, 2.7], cx: .2 },
+  { p: .95, look: [0, -.03, 0], off: [0, .2, 4.4], cx: .19 },
+  { p: 1, look: [0, -.03, 0], off: [0, .2, 4.4], cx: .19 },
+];
+const shot = { look: new THREE.Vector3(), off: new THREE.Vector3(), cx: 0 };
+function sampleShot(p) {
+  let i = 0; while (i < KF.length - 2 && p > KF[i + 1].p) i++;
+  const A = KF[i], B = KF[i + 1], t = ss(0, 1, (p - A.p) / (B.p - A.p));
+  shot.look.set(lerp(A.look[0], B.look[0], t), lerp(A.look[1], B.look[1], t), lerp(A.look[2], B.look[2], t));
+  shot.off.set(lerp(A.off[0], B.off[0], t), lerp(A.off[1], B.off[1], t), lerp(A.off[2], B.off[2], t));
+  shot.cx = lerp(A.cx, B.cx, t);
+}
+
+/* ---------- Resize ---------- */
+let VW = 1, VH = 1, mobile = false;
+function resize() {
+  VW = innerWidth; VH = innerHeight; mobile = VW < 1000 || VW / VH < 1.2;
+  renderer.setSize(VW, VH, false);
+  camera.aspect = VW / VH; camera.updateProjectionMatrix();
+}
+addEventListener('resize', resize); resize();
+
+let mx = 0, my = 0, smx = 0, smy = 0;
+addEventListener('pointermove', e => { mx = e.clientX / VW * 2 - 1; my = e.clientY / VH * 2 - 1; }, { passive: true });
+
+/* ---------- Loop ---------- */
+let p = 0, last = performance.now(), time = 0, first = true;
+const tmp = new THREE.Vector3(), lookW = new THREE.Vector3();
+function frame(now) {
+  requestAnimationFrame(frame);
+  const dt = Math.min(.05, (now - last) / 1000); last = now;
+  if (scrollY > M.storyEnd + 40 && !first) return; // hidden behind content
+  time += reduce ? 0 : dt;
+  p += (targetP - p) * (1 - Math.exp(-dt * 7));
+  smx += (mx - smx) * (1 - Math.exp(-dt * 3)); smy += (my - smy) * (1 - Math.exp(-dt * 3));
+
+  // phase factors
+  const panelOpen = ss(.15, .25, p) * (1 - ss(.9, .94, p));
+  const filterOut = ss(.29, .39, p) * (1 - ss(.875, .915, p));
+  const explode = ss(.43, .53, p) * (1 - ss(.84, .89, p));
+  const cool = clamp(1 - ss(.05, .12, p) + ss(.93, .985, p));
+  const idle = 1 - ss(0, .12, p);
+
+  // model pose
+  model.rotation.y = -.42 + Math.sin(time * .45) * .1 * idle + smx * .07;
+  model.rotation.x = .04 + smy * .03;
+  model.position.y = Math.sin(time * .9) * .018 * idle;
+
+  for (const o of parts) {
+    const u = o.userData, e = ss(u.delay, u.delay + .68, explode);
+    o.position.copy(u.base).addScaledVector(u.ex, e);
+    o.rotation.set(u.exRot[0] * e, u.exRot[1] * e, u.exRot[2] * e);
+  }
+  front.rotation.x -= 1.2 * panelOpen;
+  for (const [f, s] of [[filterL, -1], [filterR, 1]]) {
+    f.position.y += .4 * filterOut; f.position.z += .3 * filterOut; f.position.x += s * .04 * filterOut;
+    f.rotation.x += -.06 - .35 * filterOut * (1 - explode);
+  }
+  fanSpin.rotation.x -= dt * (1.2 + 9 * cool) * (reduce ? 0 : 1);
+  louver.rotation.x = -oa - (.32 + Math.sin(time * .8) * .12) * cool;
+  MAT.disp.opacity = cool;
+
+  // air particles
+  const flow = cool * (1 - explode);
+  const dirU = .92, dirV = -.42;
+  for (let i = 0; i < NP; i++) {
+    let L = pLife[i] + dt * .45 * pSeed[i * 3 + 2];
+    if (L > 1) L -= 1;
+    pLife[i] = L;
+    const d = L * 1.15, spread = pSeed[i * 3 + 1] - .5;
+    pPos[i * 3] = pSeed[i * 3] + spread * .12 * L;
+    pPos[i * 3 + 1] = oc.v + on.v * .03 + dirV * d + spread * .12 * L - .1 * L * L;
+    pPos[i * 3 + 2] = oc.u + on.u * .03 + dirU * d + spread * .05;
+    const a = Math.sin(Math.PI * L) * flow * .2;
+    pCol[i * 3] = .55 * a; pCol[i * 3 + 1] = .86 * a; pCol[i * 3 + 2] = 1 * a;
+  }
+  pGeo.attributes.position.needsUpdate = true; pGeo.attributes.color.needsUpdate = true;
+  air.visible = flow > .01;
+
+  // camera
+  sampleShot(p);
+  model.updateMatrixWorld(true);
+  lookW.copy(shot.look); model.localToWorld(lookW);
+  const k = mobile ? Math.max(1, 1.25 / camera.aspect) : Math.max(1, 2.1 / camera.aspect);
+  camera.position.copy(lookW).addScaledVector(shot.off, k);
+  camera.lookAt(lookW);
+  const cx = mobile ? 0 : shot.cx, cy = mobile ? .22 + .1 * (1 - clamp(scrollY / M.heroH)) : 0;
+  camera.setViewOffset(VW, VH, -cx * VW, cy * VH, VW, VH);
+
+  renderer.render(scene, camera);
+
+  // labels
+  for (const h of HOT) {
+    const el = hotEls[h.k];
+    let o = ss(h.a, h.a + .03, p) * (1 - ss(h.b - .03, h.b, p));
+    if (mobile && (h.k === 'motor' || h.k === 'louver' || (h.k === 'pcb' && p < .7))) o = 0;
+    if (o < .01) { el.style.opacity = 0; continue; }
+    tmp.set(...h.l); h.o.localToWorld(tmp); tmp.project(camera);
+    if (tmp.z > 1) { el.style.opacity = 0; continue; }
+    el.style.opacity = o;
+    const sx = (tmp.x * .5 + .5) * VW, sy = (-tmp.y * .5 + .5) * VH, ew = el.offsetWidth;
+    const flip = sx + ew > VW - 8; // keep the tag on-screen near the right edge
+    el.classList.toggle('flip', flip);
+    el.style.transform = `translate(${flip ? sx - ew + 5 : sx - 5}px, ${sy - 5}px)`;
+  }
+
+  if (first) { first = false; canvas.classList.add('ready'); }
+}
+requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
